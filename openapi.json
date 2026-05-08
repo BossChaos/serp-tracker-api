@@ -1,0 +1,149 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "SERP Tracker API",
+    "version": "1.0.0",
+    "description": "Google SERP tracking API with real mobile proxy integration via Proxies.sx. Track keyword positions, monitor search rankings, and analyze competitor visibility across multiple countries.",
+    "contact": {
+      "email": "xiashaoyu48@gmail.com"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://serp-tracker-api.example.com",
+      "description": "Production server"
+    }
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "summary": "Health Check",
+        "description": "Check if the API is running",
+        "responses": {
+          "200": {
+            "description": "API is healthy"
+          }
+        }
+      }
+    },
+    "/serp/search": {
+      "get": {
+        "summary": "SERP Search",
+        "description": "Search Google SERP results for a keyword with mobile proxy integration",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "Search query keyword"
+          },
+          {
+            "name": "num",
+            "in": "query",
+            "schema": { "type": "integer", "default": 10 },
+            "description": "Number of results to return"
+          },
+          {
+            "name": "gl",
+            "in": "query",
+            "schema": { "type": "string", "default": "us" },
+            "description": "Country code (us, uk, de, fr, jp, etc.)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "SERP results returned successfully"
+          }
+        }
+      }
+    },
+    "/tracker/add": {
+      "post": {
+        "summary": "Add Keyword to Tracker",
+        "description": "Add a new keyword to track",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["keyword"],
+                "properties": {
+                  "keyword": { "type": "string" },
+                  "domain": { "type": "string" },
+                  "gl": { "type": "string", "default": "us" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Keyword added to tracking"
+          }
+        }
+      }
+    },
+    "/tracker/check/{id}": {
+      "post": {
+        "summary": "Check Keyword Position",
+        "description": "Check current position for a tracked keyword",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Position check completed"
+          }
+        }
+      }
+    },
+    "/tracker/results/{id}": {
+      "get": {
+        "summary": "Get Tracking Results",
+        "description": "Get historical tracking results for a keyword",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Tracking results returned"
+          }
+        }
+      }
+    },
+    "/tracker/list": {
+      "get": {
+        "summary": "List All Tracked Keywords",
+        "description": "Get all keywords currently being tracked",
+        "responses": {
+          "200": {
+            "description": "List of tracked keywords"
+          }
+        }
+      }
+    },
+    "/tracker/check-all": {
+      "post": {
+        "summary": "Bulk Check All Keywords",
+        "description": "Check positions for all tracked keywords at once",
+        "responses": {
+          "200": {
+            "description": "Bulk check completed"
+          }
+        }
+      }
+    }
+  }
+}
